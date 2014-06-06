@@ -160,23 +160,6 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 
-    NSIndexPath *indexPath = [self.myTableView indexPathForSelectedRow];
-    DivyAddressPoint *place = transferableDivvyLocations[indexPath.row];
-
-    int distance = roundf([place.placemark.location distanceFromLocation:self.locationManager.location]);
-
-    if ((distance/1609.34) >= 75.00f)
-//    {
-//        UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"To Far From Chicago"
-//                                                    message:@"Please move within Chicago City Limits"
-//                                                   delegate:self
-//                                          cancelButtonTitle:@"OK"
-//                                          otherButtonTitles:nil];
-//
-//        [av show];
-//    }
-//    else
-//    {
         if ([segue.identifier isEqualToString:@"ShowAnnotationsOnMap"])
         {
             // Pass the data needed to create the annotations on the map
@@ -194,7 +177,6 @@
             vc.divvyStationLocation = place;
             vc.navigationItem.title = @"Detail Route Information";
         }
-//    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
