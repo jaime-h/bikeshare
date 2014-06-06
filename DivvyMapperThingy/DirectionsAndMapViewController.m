@@ -108,10 +108,27 @@
              if (error)
              {
                  UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"No Internet Connection"
-                                                             message:@"Please try again in a few minutes @D&MVC"
+                                                             message:@"Please try again in a few minutes"
                                                             delegate:nil //set delegate for UIAlertView
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
+                 
+                 
+                 UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+                 
+                 verticalMotionEffect.minimumRelativeValue = @(-50);
+                 verticalMotionEffect.maximumRelativeValue = @(50);
+                 
+                 UIInterpolatingMotionEffect *horizontalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+                 
+                 horizontalMotionEffect.minimumRelativeValue = @(-50);
+                 horizontalMotionEffect.maximumRelativeValue = @(50);
+                 
+                 UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+                 
+                 group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+                 
+                 [av addMotionEffect:group];
 
                  [av show];
                  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -132,8 +149,24 @@
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
-
+        
+        UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+        
+        verticalMotionEffect.minimumRelativeValue = @(-50);
+        verticalMotionEffect.maximumRelativeValue = @(50);
+        
+        UIInterpolatingMotionEffect *horizontalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+        
+        horizontalMotionEffect.minimumRelativeValue = @(-50);
+        horizontalMotionEffect.maximumRelativeValue = @(50);
+        
+        UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+        
+        group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+        
+        [av addMotionEffect:group];
         [av show];
+        
         self.freeBikesTextField.text = @"To Far"; self.freeBikesTextField.textColor = [UIColor redColor];
         self.freeDocksTextField.text = @"To Far"; self.freeDocksTextField.textColor = [UIColor redColor];
     }

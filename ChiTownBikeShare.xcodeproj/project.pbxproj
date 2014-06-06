@@ -232,6 +232,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Jaime Hernandez";
 				TargetAttributes = {
+					6F9B3FBC19199882003C451A = {
+						DevelopmentTeam = E94XLULV7K;
+					};
 					6F9B3FDD19199882003C451A = {
 						TestTargetID = 6F9B3FBC19199882003C451A;
 					};
@@ -414,10 +417,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DivvyMapperThingy/ChiTownBikeShare-Prefix.pch";
 				INFOPLIST_FILE = "DivvyMapperThingy/ChiTownBikeShare-Info.plist";
 				PRODUCT_NAME = ChiTownBikeShare;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -427,10 +433,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DivvyMapperThingy/ChiTownBikeShare-Prefix.pch";
 				INFOPLIST_FILE = "DivvyMapperThingy/ChiTownBikeShare-Info.plist";
 				PRODUCT_NAME = ChiTownBikeShare;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
