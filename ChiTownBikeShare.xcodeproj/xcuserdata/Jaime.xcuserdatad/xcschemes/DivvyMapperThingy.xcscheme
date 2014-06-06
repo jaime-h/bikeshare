@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6F9B3FBC19199882003C451A"
-               BuildableName = "DivvyMapperThingy.app"
+               BuildableName = "ChiTownBikeShare.app"
                BlueprintName = "ChiTownBikeShare"
                ReferencedContainer = "container:ChiTownBikeShare.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6F9B3FDD19199882003C451A"
-               BuildableName = "DivvyMapperThingyTests.xctest"
+               BuildableName = "ChiTownBikeShareTests.xctest"
                BlueprintName = "ChiTownBikeShareTests"
                ReferencedContainer = "container:ChiTownBikeShare.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6F9B3FBC19199882003C451A"
-            BuildableName = "DivvyMapperThingy.app"
+            BuildableName = "ChiTownBikeShare.app"
             BlueprintName = "ChiTownBikeShare"
             ReferencedContainer = "container:ChiTownBikeShare.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6F9B3FBC19199882003C451A"
-            BuildableName = "DivvyMapperThingy.app"
+            BuildableName = "ChiTownBikeShare.app"
             BlueprintName = "ChiTownBikeShare"
             ReferencedContainer = "container:ChiTownBikeShare.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6F9B3FBC19199882003C451A"
-            BuildableName = "DivvyMapperThingy.app"
+            BuildableName = "ChiTownBikeShare.app"
             BlueprintName = "ChiTownBikeShare"
             ReferencedContainer = "container:ChiTownBikeShare.xcodeproj">
          </BuildableReference>
