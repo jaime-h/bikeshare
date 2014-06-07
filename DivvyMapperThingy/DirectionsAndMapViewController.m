@@ -48,7 +48,9 @@
 
     [self showSelectedDivvyAnnotation];
     [self createDirectionsFromLocationToStation];
-
+    
+//    [[UIBarButtonItem appearance] setTitle:@"List"];
+    
 }
 
 - (void)viewDidLoad
@@ -57,7 +59,7 @@
     [self colorTextLables];
 
     // Create an offset since the textview believes that it is behind something..
-    self.divvyLocationDirectionsTextView.contentInset = UIEdgeInsetsMake(-42.5,1.0,0,0.0);
+    self.divvyLocationDirectionsTextView.contentInset = UIEdgeInsetsMake(-22.5,1.0,0,0.0);
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
@@ -159,8 +161,8 @@
         
         [av show];
         
-        self.freeBikesTextField.text = @"To Far"; self.freeBikesTextField.textColor = [UIColor redColor];
-        self.freeDocksTextField.text = @"To Far"; self.freeDocksTextField.textColor = [UIColor redColor];
+        self.freeBikesTextField.text = @"To Far"; self.freeBikesTextField.textColor = [UIColor redColor]; self.freeBikesTextField.enabled = NO;
+        self.freeDocksTextField.text = @"To Far"; self.freeDocksTextField.textColor = [UIColor redColor]; self.freeDocksTextField.enabled = NO;
     }
 
 }
@@ -253,6 +255,10 @@
     [[self.freeDocksTextField layer] setBorderColor:[myColor CGColor]];
     [[self.freeDocksTextField layer] setBorderWidth:1.0];
     [[self.freeDocksTextField layer] setCornerRadius:10];
+    
+    // Make textfields not editable
+    self.freeDocksTextField.enabled = NO;
+    self.freeBikesTextField.enabled = NO;
 
 }
 
