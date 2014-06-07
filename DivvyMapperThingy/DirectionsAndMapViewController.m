@@ -83,6 +83,25 @@
 
 }
 
+- (void)addParallax:(UIAlertView *)av
+{
+    UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    
+    verticalMotionEffect.minimumRelativeValue = @(-50);
+    verticalMotionEffect.maximumRelativeValue = @(50);
+    
+    UIInterpolatingMotionEffect *horizontalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    
+    horizontalMotionEffect.minimumRelativeValue = @(-50);
+    horizontalMotionEffect.maximumRelativeValue = @(50);
+    
+    UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+    
+    group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+    
+    [av addMotionEffect:group];
+}
+
 -(void)createDirectionsFromLocationToStation
 {
     MKPlacemark *placemark = [[MKPlacemark alloc]initWithCoordinate:self.divvyStationLocation.placemark.coordinate addressDictionary:nil];
@@ -114,21 +133,7 @@
                                                    otherButtonTitles:nil];
                  
                  
-                 UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-                 
-                 verticalMotionEffect.minimumRelativeValue = @(-50);
-                 verticalMotionEffect.maximumRelativeValue = @(50);
-                 
-                 UIInterpolatingMotionEffect *horizontalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-                 
-                 horizontalMotionEffect.minimumRelativeValue = @(-50);
-                 horizontalMotionEffect.maximumRelativeValue = @(50);
-                 
-                 UIMotionEffectGroup *group = [UIMotionEffectGroup new];
-                 
-                 group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
-                 
-                 [av addMotionEffect:group];
+                 [self addParallax:av];
 
                  [av show];
                  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -150,21 +155,8 @@
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
         
-        UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+        [self addParallax:av];
         
-        verticalMotionEffect.minimumRelativeValue = @(-50);
-        verticalMotionEffect.maximumRelativeValue = @(50);
-        
-        UIInterpolatingMotionEffect *horizontalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-        
-        horizontalMotionEffect.minimumRelativeValue = @(-50);
-        horizontalMotionEffect.maximumRelativeValue = @(50);
-        
-        UIMotionEffectGroup *group = [UIMotionEffectGroup new];
-        
-        group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
-        
-        [av addMotionEffect:group];
         [av show];
         
         self.freeBikesTextField.text = @"To Far"; self.freeBikesTextField.textColor = [UIColor redColor];
