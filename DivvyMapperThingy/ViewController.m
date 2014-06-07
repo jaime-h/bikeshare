@@ -32,6 +32,14 @@
 {
     [super viewDidLoad];
     [self gatherDivvyData];
+    
+    // http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller/12502450#12502450
+    // http://stackoverflow.com/questions/10291537/pull-to-refresh-uitableview-without-uitableviewcontroller?rq=1
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
+    [self.myTableView addSubview:refreshControl];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -44,6 +52,33 @@
 
     [self.myTableView setSeparatorColor:mycolor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:mycolor}];
+
+}
+-(void)handleRefresh:(UIRefreshControl *)refreshControl
+{
+    [refreshControl endRefreshing];
+    
+    // sort the array with the current locatoin.
+    
+    NSArray *mapItems = sortArray;
+    
+    mapItems = [mapItems sortedArrayUsingComparator:^NSComparisonResult(MKMapItem* obj1, MKMapItem* obj2)
+                {
+                    float d1 = [obj1.placemark.location distanceFromLocation:self.locationManager.location];
+                    float d2 = [obj2.placemark.location distanceFromLocation:self.locationManager.location];
+                    if (d1 < d2)
+                    {
+                        return NSOrderedAscending;
+                    }
+                    else
+                    {
+                        return NSOrderedDescending;
+                    }
+                    
+                }];
+    
+    transferableDivvyLocations = mapItems;
+    [self.myTableView reloadData];
 
 }
 
