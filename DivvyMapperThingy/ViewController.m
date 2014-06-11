@@ -57,28 +57,84 @@
 -(void)handleRefresh:(UIRefreshControl *)refreshControl
 {
     [refreshControl endRefreshing];
+
+    NSString *urlString   = [NSString stringWithFormat:@"http://divvybikes.com/stations/json"];
+    NSURL *url            = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
-    // sort the array with the current locatoin.
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    NSArray *mapItems = sortArray;
-    
-    mapItems = [mapItems sortedArrayUsingComparator:^NSComparisonResult(MKMapItem* obj1, MKMapItem* obj2)
-                {
-                    float d1 = [obj1.placemark.location distanceFromLocation:self.locationManager.location];
-                    float d2 = [obj2.placemark.location distanceFromLocation:self.locationManager.location];
-                    if (d1 < d2)
-                    {
-                        return NSOrderedAscending;
-                    }
-                    else
-                    {
-                        return NSOrderedDescending;
-                    }
-                    
-                }];
-    
-    transferableDivvyLocations = mapItems;
-    [self.myTableView reloadData];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
+     {
+         if (connectionError != nil)
+         {
+             UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"No Internet Connection"
+                                                         message:@"Please try again in a few minutes"
+                                                        delegate:nil //set delegate for UIAlertView
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+             
+             [self addParallax:av];
+             
+             [av show];
+             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+         }
+         else
+         {
+             NSDictionary *outerContainer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
+             NSArray *allDivvyLocations = outerContainer[@"stationBeanList"];
+             
+             sortArray = [NSMutableArray new];
+             [sortArray removeAllObjects];
+             
+             for (NSDictionary *point in allDivvyLocations)
+             {
+                 DivyAddressPoint *divvyLocationPoint = [DivyAddressPoint new];
+                 
+                 divvyLocationPoint.stationName = point[@"stationName"];
+                 divvyLocationPoint.address     = point[@"location"];
+                 
+                 divvyLocationPoint.lat         = point[@"latitude"];
+                 divvyLocationPoint.lng         = point[@"longitude"];
+                 
+                 
+                 CGFloat latitude  = (CGFloat)[divvyLocationPoint.lat floatValue];
+                 CGFloat longitude = (CGFloat)[divvyLocationPoint.lng floatValue];
+                 
+                 CLLocationCoordinate2D placeCoordinate = CLLocationCoordinate2DMake(latitude, longitude);
+                 MKPlacemark *placemark = [[MKPlacemark alloc]initWithCoordinate:placeCoordinate addressDictionary:nil];
+                 
+                 divvyLocationPoint.placemark = placemark;
+                 
+                 divvyLocationPoint.availableBikes = point[@"availableBikes"];
+                 divvyLocationPoint.availableDocks = point[@"availableDocks"];
+                 
+                 [sortArray addObject:divvyLocationPoint];
+                 
+             }
+             
+             NSArray *mapItems = sortArray;
+             
+             mapItems = [mapItems sortedArrayUsingComparator:^NSComparisonResult(MKMapItem* obj1, MKMapItem* obj2)
+                         {
+                             float d1 = [obj1.placemark.location distanceFromLocation:self.locationManager.location];
+                             float d2 = [obj2.placemark.location distanceFromLocation:self.locationManager.location];
+                             if (d1 < d2)
+                             {
+                                 return NSOrderedAscending;
+                             }
+                             else
+                             {
+                                 return NSOrderedDescending;
+                             }
+                             
+                         }];
+             
+             transferableDivvyLocations = mapItems;
+             [self.myTableView reloadData];
+             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+         }
+     }];
 
 }
 

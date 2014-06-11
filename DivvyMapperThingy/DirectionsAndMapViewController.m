@@ -76,7 +76,7 @@
     NumberOfBikes = [self.divvyStationLocation.availableBikes intValue];
     NumberofDocks = [self.divvyStationLocation.availableDocks intValue];
 
-    NSString *detailText = [NSString stringWithFormat:@"%i Bikes, %i Docks Available", NumberOfBikes, NumberofDocks];
+    NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available", (long)NumberOfBikes, (long)NumberofDocks];
 
     annotation.subtitle = detailText;
 

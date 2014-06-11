@@ -100,7 +100,7 @@
         NumberOfBikes = [point.availableBikes intValue];
         NumberofDocks = [point.availableDocks intValue];
 
-        NSString *detailText = [NSString stringWithFormat:@"%i Bikes, %i Docks Available", NumberOfBikes, NumberofDocks];
+        NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available", (long)NumberOfBikes, (long)NumberofDocks];
 
         point.subtitle = detailText;
 
@@ -114,7 +114,7 @@
 
     DivvyMKPointAnnotation *point = [DivvyMKPointAnnotation new];
 
-    point.stationName = [NSString stringWithFormat:@"%d",[self.annotationsMapView.annotations count]];
+    point.stationName = [NSString stringWithFormat:@"%lu",(unsigned long)[self.annotationsMapView.annotations count]];
 
     [self.annotationsMapView reloadInputViews];
 
