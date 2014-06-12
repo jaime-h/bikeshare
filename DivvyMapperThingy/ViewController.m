@@ -293,6 +293,9 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    // http://zeroheroblog.com/ios/how-to-use-multiple-uialertview-components-inside-one-view-controller-in-ios
+    // http://stackoverflow.com/questions/12731460/multiple-uialertviews-in-the-same-view
+    // Using tags to differentiate between mulitple alertviews
 
     if (buttonIndex == 0)
     {

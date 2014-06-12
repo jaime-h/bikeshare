@@ -49,7 +49,8 @@
     [self showSelectedDivvyAnnotation];
     [self createDirectionsFromLocationToStation];
     
-//    [[UIBarButtonItem appearance] setTitle:@"List"];
+    // self.navigationController.navigationBar.topItem.title = @"Location List";
+    //    [[UIBarButtonItem appearance] setTitle:@"List"];
     
 }
 

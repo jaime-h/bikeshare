@@ -136,7 +136,9 @@
                             <constraint firstItem="HKJ-WR-IJQ" firstAttribute="top" secondItem="v1o-iE-0yE" secondAttribute="bottom" constant="8" id="xgf-VW-BVo"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="zqM-ZM-FXo"/>
+                    <navigationItem key="navigationItem" id="zqM-ZM-FXo">
+                        <barButtonItem key="backBarButtonItem" id="Oqz-4Y-09V"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="divvyLocationDetailMap" destination="v1o-iE-0yE" id="y4Z-6D-ZmY"/>
                         <outlet property="divvyLocationDirectionsTextView" destination="h9K-wg-HZQ" id="zS8-B9-7yZ"/>
