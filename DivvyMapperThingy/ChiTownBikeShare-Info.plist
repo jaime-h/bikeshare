@@ -25,7 +25,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationUsageDescription</key>
-	<string>We use location services in order to determine the distance to the Divvy stations and for map routing purposes.</string>
+	<string>We use location services to determine the distance to the Divvy stations and for map routing purposes.</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

@@ -46,7 +46,7 @@
 {
     self.locationManager = [CLLocationManager new];
     self.locationManager.delegate = self;
-    [self.locationManager startUpdatingLocation];
+    [self.locationManager startMonitoringSignificantLocationChanges];
 
     UIColor *mycolor = [UIColor pxColorWithHexValue:@"#3DB7E4"];
 
@@ -54,10 +54,8 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:mycolor}];
 
 }
--(void)handleRefresh:(UIRefreshControl *)refreshControl
+- (void)pullDivvyData
 {
-    [refreshControl endRefreshing];
-
     NSString *urlString   = [NSString stringWithFormat:@"http://divvybikes.com/stations/json"];
     NSURL *url            = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -135,6 +133,15 @@
              [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
          }
      }];
+}
+
+-(void)handleRefresh:(UIRefreshControl *)refreshControl
+{
+    
+
+    [self pullDivvyData];
+    
+    [refreshControl endRefreshing];
 
 }
 
@@ -309,10 +316,12 @@
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
+    
+    [self pullDivvyData];
     // http://stackoverflow.com/questions/19393458/ios7-core-location-not-updating?rq=1
     // Trying to see if this helps...
-    NSLog(@"%@", self.locationManager.location);
-    [self.locationManager stopUpdatingLocation];
+    NSLog(@"Pulled Divvy Data");
+//    [self.locationManager stopUpdatingLocation];
 }
 
 @end
