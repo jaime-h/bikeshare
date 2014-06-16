@@ -39,18 +39,9 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-
-    self.locationManager = [CLLocationManager new];
-    [self.divvyLocationDetailMap setShowsUserLocation:YES];
-    [self.locationManager startUpdatingLocation];
-
-    [self determineMapDisplayProperties];
-
-    [self showSelectedDivvyAnnotation];
-    [self createDirectionsFromLocationToStation];
     
-    // self.navigationController.navigationBar.topItem.title = @"Location List";
-    //    [[UIBarButtonItem appearance] setTitle:@"List"];
+    [self checkLocationServices];
+
     
 }
 
@@ -131,13 +122,13 @@
              {
                  UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"No Internet Connection"
                                                              message:@"Please try again in a few minutes"
-                                                            delegate:nil //set delegate for UIAlertView
+                                                            delegate:self //set delegate for UIAlertView
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles:nil];
                  
                  
                  [self addParallax:av];
-
+                 av.tag = 001;
                  [av show];
                  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
              }
@@ -159,7 +150,7 @@
                                           otherButtonTitles:nil];
         
         [self addParallax:av];
-        
+        av.tag = 002;
         [av show];
         
         self.freeBikesTextField.text = @"To Far"; self.freeBikesTextField.textColor = [UIColor redColor]; self.freeBikesTextField.enabled = NO;
@@ -265,12 +256,73 @@
 
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0)
+    
+    // Differentiating between two different alertviews with different actions...
+    // http://stackoverflow.com/questions/9976471/uialertviewdelegateclickedbuttonatindex-and-two-buttons/9976689#9976689
+    
+    if (alertView.tag == 001 || alertView.tag == 002)
     {
-        // Let's dismiss this and go to the previous one..
-        [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
-        [self.navigationController popViewControllerAnimated:YES];
+        if (buttonIndex == 0)
+        {
+            // Let's dismiss this and go to the previous one..
+            [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }
+    }
+    
+    if (alertView.tag == 003)
+    {
+        switch (buttonIndex)
+        {
+            case 0:
+                [self showSelectedDivvyAnnotation];
+                break;
+            
+            case 1:
+                // Let's dismiss this and go to the previous one..
+                [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
+-(void)checkLocationServices
+{
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied)
+    {
+        // Everything ok - perform all display methods
+        self.locationManager = [CLLocationManager new];
+        [self.divvyLocationDetailMap setShowsUserLocation:YES];
+        [self.locationManager startUpdatingLocation];
         
+        [self determineMapDisplayProperties];
+        
+        [self showSelectedDivvyAnnotation];
+        [self createDirectionsFromLocationToStation];
+    }
+    else
+    {
+        // No permissions - let them know why...
+        // Settings
+        // Also check to see if they just want to see the location of the stations...
+        // Maybe geocode an address and display it?
+        
+        UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"App Permission Denied"
+                                                    message:@"To re-enable, please go to \n Settings>Privacy>Location Services"
+                                                   delegate:self //set delegate for UIAlertView
+                                          cancelButtonTitle:@"Show location"
+                                          otherButtonTitles:@"Return to list", nil];
+        
+        
+        [self addParallax:av];
+        av.tag = 003;
+        [av show];
+
     }
 }
 
