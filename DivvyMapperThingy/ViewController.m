@@ -312,6 +312,7 @@
     // http://stackoverflow.com/questions/19393458/ios7-core-location-not-updating?rq=1
     // Trying to see if this helps...
     NSLog(@"%@", self.locationManager.location);
+    [self.locationManager stopUpdatingLocation];
 }
 
 @end

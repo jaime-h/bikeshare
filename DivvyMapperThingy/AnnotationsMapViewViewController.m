@@ -34,20 +34,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.locationManager = [CLLocationManager new];
-    [self.annotationsMapView setShowsUserLocation:YES];
-    [self.locationManager startUpdatingLocation];
-
-    CLLocationCoordinate2D centerCoordinate = self.locationManager.location.coordinate;
-
-    MKCoordinateSpan coordinateSpan = MKCoordinateSpanMake(0.025, 0.025);
-    MKCoordinateRegion region = MKCoordinateRegionMake(centerCoordinate, coordinateSpan);
-
-    self.annotationsMapView.region = region;
-    self.annotationsMapView.delegate = self;
-
-    [self loadAnnotationsOnMap];
-
+    
+    [self checkLocationServices];
+    
+    
 }
 
 - (void)viewDidLoad
@@ -119,4 +109,99 @@
     [self.annotationsMapView reloadInputViews];
 
 }
+
+-(void)checkLocationServices
+{
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied)
+    {
+        self.locationManager = [CLLocationManager new];
+        [self.annotationsMapView setShowsUserLocation:YES];
+        [self.locationManager startUpdatingLocation];
+        
+        CLLocationCoordinate2D centerCoordinate = self.locationManager.location.coordinate;
+        
+        MKCoordinateSpan coordinateSpan = MKCoordinateSpanMake(0.025, 0.025);
+        MKCoordinateRegion region = MKCoordinateRegionMake(centerCoordinate, coordinateSpan);
+        
+        self.annotationsMapView.region = region;
+        self.annotationsMapView.delegate = self;
+        
+        [self loadAnnotationsOnMap];
+        
+    }
+    else
+    {
+        // No permissions - let them know why...
+        // Settings
+        // Also check to see if they just want to see the location of the stations...
+        // Maybe geocode an address and display it?
+        
+        UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"App Permission Denied"
+                                                    message:@"To re-enable, please go to \n Settings>Privacy>Location Services"
+                                                   delegate:self //set delegate for UIAlertView
+                                          cancelButtonTitle:@"Show locations"
+                                          otherButtonTitles:@"Return to list", nil];
+        
+        
+        [self addParallax:av];
+        av.tag = 001;
+        [av show];
+        
+    }
+}
+
+- (void)addParallax:(UIAlertView *)av
+{
+    UIInterpolatingMotionEffect *verticalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+    
+    verticalMotionEffect.minimumRelativeValue = @(-50);
+    verticalMotionEffect.maximumRelativeValue = @(50);
+    
+    UIInterpolatingMotionEffect *horizontalMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+    
+    horizontalMotionEffect.minimumRelativeValue = @(-50);
+    horizontalMotionEffect.maximumRelativeValue = @(50);
+    
+    UIMotionEffectGroup *group = [UIMotionEffectGroup new];
+    
+    group.motionEffects = @[horizontalMotionEffect, verticalMotionEffect];
+    
+    [av addMotionEffect:group];
+}
+
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    
+    // Differentiating between two different alertviews with different actions...
+    // http://stackoverflow.com/questions/9976471/uialertviewdelegateclickedbuttonatindex-and-two-buttons/9976689#9976689
+    
+    if (alertView.tag == 001)
+    {
+        if (buttonIndex == 0)
+        {
+            // Display annotations with Madison & State Street coordinates
+            // 41.8783543,-87.6297999
+            
+            CLLocationCoordinate2D centerCoordinate = CLLocationCoordinate2DMake(41.8783543, -87.6297999);
+            MKCoordinateSpan coordinateSpan = MKCoordinateSpanMake(0.025, 0.025);
+            MKCoordinateRegion region = MKCoordinateRegionMake(centerCoordinate, coordinateSpan);
+            
+            self.annotationsMapView.region = region;
+            self.annotationsMapView.delegate = self;
+            
+            [self loadAnnotationsOnMap];
+            
+        }
+        
+        if (buttonIndex == 1)
+        {
+            // Let's dismiss this and go to the previous one..
+            [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+            [self.navigationController popViewControllerAnimated:YES];
+
+        }
+        
+    }
+}
+
 @end
