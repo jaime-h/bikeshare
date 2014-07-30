@@ -75,19 +75,83 @@
 
     DivyAddressPoint *location = transferableDivvyLocations[indexPath.row];
     cell.textLabel.text = location.stationName;
-    UIColor *myColor = [UIColor pxColorWithHexValue:@"#3DB7E4"];
-    cell.textLabel.textColor = myColor;
 
-    NSInteger NumberOfBikes; NSInteger NumberofDocks;
+//    UIColor *myColor = [UIColor pxColorWithHexValue:@"#3DB7E4"];
+//    cell.textLabel.textColor = myColor;
+
+    NSInteger NumberOfBikes; NSInteger NumberOfDocks; NSInteger NumberOfAllDocks;
     NumberOfBikes = [location.availableBikes intValue];
-    NumberofDocks = [location.availableDocks intValue];
+    NumberOfDocks = [location.availableDocks intValue];
+    NumberOfAllDocks = [location.totalDocks  intValue];
+
+    float percentageOfFreeBikes; float percentageOfFreeDocks;
+
+    percentageOfFreeBikes = (float) NumberOfBikes/NumberOfAllDocks;
+    percentageOfFreeDocks = (float) NumberOfDocks/NumberOfAllDocks;
 
     int distance = roundf([location.placemark.location distanceFromLocation:self.locationManager.location]);
 
-    NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available, Dist <%2.2f> mi", (long)NumberOfBikes, (long)NumberofDocks, (distance/1609.34)];
+    NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available, Dist <%2.2f> mi", (long)NumberOfBikes, (long)NumberOfDocks, (distance/1609.34)];
 
-    cell.detailTextLabel.textColor = myColor;
-    cell.detailTextLabel.text = detailText;
+    // Create an attributed string to show the user the state of either the bikes or docks..
+
+    NSString *colorString = detailText;
+    NSArray *components = [colorString componentsSeparatedByString:@","];
+    NSRange bikeRange = [colorString rangeOfString:[components objectAtIndex:0]];
+    NSRange dockRange = [colorString rangeOfString:[components objectAtIndex:1]];
+
+     NSMutableAttributedString *attrString = [[ NSMutableAttributedString alloc] initWithString:colorString];
+
+    [attrString beginEditing];
+
+    // Bottom 1/3 are red     [UIColor colorWithRed:0.884739 green:0.0 blue:0.0819708 alpha:1.0]
+    // Midlle 1/3 are yellow  [UIColor colorWithRed:0.947441 green:0.740463 blue:0.0295548 alpha:1.0]
+    // Top 1/3 are green      [UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0]
+
+    if (percentageOfFreeBikes <= 0.33)
+    {
+        [attrString addAttribute: NSForegroundColorAttributeName
+                           value:[UIColor colorWithRed:0.884739 green:0.0 blue:0.0819708 alpha:1.0]
+                           range:bikeRange];
+    }
+    else if (percentageOfFreeBikes >= 0.34 && percentageOfFreeBikes <= 0.66)
+    {
+    [attrString addAttribute: NSForegroundColorAttributeName
+                       value:[UIColor colorWithRed:0.947441 green:0.740463 blue:0.0295548 alpha:1.0]
+                       range:bikeRange];
+
+    }
+    else if (percentageOfFreeBikes > 0.67)
+    {
+    [attrString addAttribute: NSForegroundColorAttributeName
+                       value:[UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0]
+                       range:bikeRange];
+    }
+
+    if (percentageOfFreeDocks <= 0.33)
+    {
+        [attrString addAttribute: NSForegroundColorAttributeName
+                           value:[UIColor colorWithRed:0.884739 green:0.0 blue:0.0819708 alpha:1.0]
+                           range:dockRange];
+    }
+    else if (percentageOfFreeDocks >= 0.34 && percentageOfFreeDocks <= 0.66)
+    {
+        [attrString addAttribute: NSForegroundColorAttributeName
+                           value:[UIColor colorWithRed:0.947441 green:0.740463 blue:0.0295548 alpha:1.0]
+                           range:dockRange];
+
+    }
+    else if (percentageOfFreeDocks > 0.67)
+    {
+        [attrString addAttribute: NSForegroundColorAttributeName
+                           value:[UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0]
+                           range:dockRange];
+    }
+
+
+    [attrString endEditing];
+
+    cell.detailTextLabel.attributedText = attrString;
     return cell;
 }
 
@@ -164,6 +228,9 @@
 
                 divvyLocationPoint.availableBikes = point[@"availableBikes"];
                 divvyLocationPoint.availableDocks = point[@"availableDocks"];
+
+                // Adding total docks for calculation - 07272014
+                divvyLocationPoint.totalDocks     = point[@"totalDocks"];
 
                 [sortArray addObject:divvyLocationPoint];
 
