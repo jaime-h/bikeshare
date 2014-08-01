@@ -20,6 +20,11 @@
     NSArray *transferableDivvyLocations;
     NSMutableArray *sortArray;
     DivyAddressPoint *divvyLocation;
+
+    UIColor *ragColorRed;
+    UIColor *ragColorAmber;
+    UIColor *ragColorGreen;
+
 }
 
 @property CLLocationManager *locationManager;
@@ -35,6 +40,8 @@
     
     // http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller/12502450#12502450
     // http://stackoverflow.com/questions/10291537/pull-to-refresh-uitableview-without-uitableviewcontroller?rq=1
+
+    [self initRAGColors];
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
@@ -84,6 +91,8 @@
     NumberOfDocks = [location.availableDocks intValue];
     NumberOfAllDocks = [location.totalDocks  intValue];
 
+    // Using total docs to determine the % of free bikes and free docks
+
     float percentageOfFreeBikes; float percentageOfFreeDocks;
 
     percentageOfFreeBikes = (float) NumberOfBikes/NumberOfAllDocks;
@@ -94,6 +103,7 @@
     NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available, Dist <%2.2f> mi", (long)NumberOfBikes, (long)NumberOfDocks, (distance/1609.34)];
 
     // Create an attributed string to show the user the state of either the bikes or docks..
+    // AKA RAG status of open bikes and docks (Red/Amber/Green)
 
     NSString *colorString = detailText;
     NSArray *components = [colorString componentsSeparatedByString:@","];
@@ -108,43 +118,43 @@
     // Midlle 1/3 are yellow  [UIColor colorWithRed:0.947441 green:0.740463 blue:0.0295548 alpha:1.0]
     // Top 1/3 are green      [UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0]
 
-    if (percentageOfFreeBikes <= 0.33)
+    if (percentageOfFreeBikes < 0.34)
     {
         [attrString addAttribute: NSForegroundColorAttributeName
-                           value:[UIColor colorWithRed:0.884739 green:0.0 blue:0.0819708 alpha:1.0]
+                           value:ragColorRed
                            range:bikeRange];
     }
     else if (percentageOfFreeBikes >= 0.34 && percentageOfFreeBikes <= 0.66)
     {
     [attrString addAttribute: NSForegroundColorAttributeName
-                       value:[UIColor colorWithRed:0.947441 green:0.740463 blue:0.0295548 alpha:1.0]
+                       value:ragColorAmber
                        range:bikeRange];
 
     }
-    else if (percentageOfFreeBikes > 0.67)
+    else if (percentageOfFreeBikes > 0.66)
     {
     [attrString addAttribute: NSForegroundColorAttributeName
-                       value:[UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0]
+                       value:ragColorGreen
                        range:bikeRange];
     }
 
-    if (percentageOfFreeDocks <= 0.33)
+    if (percentageOfFreeDocks < 0.34)
     {
         [attrString addAttribute: NSForegroundColorAttributeName
-                           value:[UIColor colorWithRed:0.884739 green:0.0 blue:0.0819708 alpha:1.0]
+                           value:ragColorRed
                            range:dockRange];
     }
     else if (percentageOfFreeDocks >= 0.34 && percentageOfFreeDocks <= 0.66)
     {
         [attrString addAttribute: NSForegroundColorAttributeName
-                           value:[UIColor colorWithRed:0.947441 green:0.740463 blue:0.0295548 alpha:1.0]
+                           value:ragColorAmber
                            range:dockRange];
 
     }
-    else if (percentageOfFreeDocks > 0.67)
+    else if (percentageOfFreeDocks > 0.66)
     {
         [attrString addAttribute: NSForegroundColorAttributeName
-                           value:[UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0]
+                           value:ragColorGreen
                            range:dockRange];
     }
 
@@ -310,5 +320,11 @@
 //    [self.locationManager stopUpdatingLocation];
 }
 
+-(void) initRAGColors
+{
+    ragColorRed   =   [UIColor colorWithRed:0.884739 green:0.0 blue:0.0819708 alpha:1.0];
+    ragColorAmber =   [UIColor colorWithRed:0.947441 green:0.740463 blue:0.0295548 alpha:1.0];
+    ragColorGreen =   [UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0];
+}
 
 @end

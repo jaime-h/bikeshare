@@ -1,15 +1,14 @@
 //
-//  DivyAddressPoint.h
-//  DivvyMapperThingy
+//  PointAnnotationMethod.h
+//  ChiTownBikeShare
 //
-//  Created by Jaime Hernandez on 5/6/14.
+//  Created by Jaime Hernandez on 8/1/14.
 //  Copyright (c) 2014 Jaime Hernandez. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-@interface DivyAddressPoint : NSMutableArray
+@interface MasterPointAnnotation : MKPointAnnotation
 
 @property NSString *stationName;
 @property NSString *lat;
@@ -20,5 +19,6 @@
 @property NSString *totalDocks;
 @property NSString *availableBikes;
 @property NSString *bikeDockPinColor;
+
 
 @end

@@ -12,6 +12,20 @@
 #import "DivvyMKPointAnnotation.h"
 #import "UIColor+PXExtentions.h"
 
+#import "RedRed.h"
+#import "RedYellow.h"
+#import "RedGreen.h"
+
+#import "YellowRed.h"
+#import "YellowYellow.h"
+#import "YellowGreen.h"
+
+#import "GreenRed.h"
+#import "GreenYellow.h"
+#import "GreenGreen.h"
+
+#import "MasterPointAnnotation.h"
+
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 
@@ -45,6 +59,18 @@
     [super viewDidLoad];
 
 }
+- (MKPinAnnotationView *)createGenericPicHeader:(id)annotation
+{
+    MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
+    pin.canShowCallout = YES;
+    pin.leftCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    pin.animatesDrop = YES;
+    UIImageView *iconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bike-1"]];
+    pin.leftCalloutAccessoryView = iconView;
+    pin.pinColor = MKPinAnnotationColorPurple;
+    return pin;
+}
+
 -(MKAnnotationView*)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
     // Need to sort out clustering and zoom levels.... 
@@ -54,9 +80,74 @@
         // This will return the "blue dot"
         return nil;
     }
-    else 
+
+    else if ([annotation isKindOfClass:[RedRed class]])
     {
-        // This is the return for a cluster
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"RedRed"];
+        return pin;
+    }
+    else if ([annotation isKindOfClass:[RedYellow class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"RedYellow"];
+        return pin;
+    }
+
+    else if ([annotation isKindOfClass:[RedGreen class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"RedGreen-1"];
+        return pin;
+    }
+    else if ([annotation isKindOfClass:[YellowRed class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"YellowRed"];
+        return pin;
+    }
+    else if ([annotation isKindOfClass:[YellowYellow class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"YellowYellow-1"];
+        return pin;
+    }
+    else if ([annotation isKindOfClass:[YellowGreen class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"YellowGreen"];
+        return pin;
+    }
+    else if ([annotation isKindOfClass:[GreenRed class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"GreenRed-1"];
+        return pin;
+    }
+    else if ([annotation isKindOfClass:[GreenYellow class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"GreenYellow"];
+        return pin;
+    }
+    else if ([annotation isKindOfClass:[GreenGreen class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"GreenGreen"];
+        return pin;
+    }
+    else
+    {
+        // Fall through for any other scenarios
 
         MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
         pin.canShowCallout = YES;
@@ -73,29 +164,168 @@
 
 }
 
+- (void)createAnnotationsFromItems:(DivyAddressPoint *)item point:(MasterPointAnnotation *)point NumberOfDocks:(NSInteger)NumberOfDocks NumberOfBikes:(NSInteger)NumberOfBikes
+{
+    point.coordinate = CLLocationCoordinate2DMake(item.placemark.coordinate.latitude, item.placemark.coordinate.longitude);
+    point.stationName = item.stationName;
+    point.availableBikes = item.availableBikes;
+    point.availableDocks = item.availableDocks;
+    
+    point.title = item.stationName;
+    NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available", (long)NumberOfBikes, (long)NumberOfDocks];
+    
+    point.subtitle = detailText;
+}
+
 -(void)loadAnnotationsOnMap
 {
     for (DivyAddressPoint *item in self.annotationsArray)
     {
 
-        DivvyMKPointAnnotation *point = [DivvyMKPointAnnotation new];
-        point.coordinate = CLLocationCoordinate2DMake(item.placemark.coordinate.latitude, item.placemark.coordinate.longitude);
-        point.stationName = item.stationName;
-        point.availableBikes = item.availableBikes;
-        point.availableDocks = item.availableDocks;
+        // Calculate the percentages of Docks & Bikes so that I can drop the corresponding pin..
+        NSInteger NumberOfBikes; NSInteger NumberOfDocks; NSInteger NumberOfAllDocks;
+        NumberOfBikes = [item.availableBikes intValue];
+        NumberOfDocks = [item.availableDocks intValue];
+        NumberOfAllDocks = [item.totalDocks  intValue];
 
-        point.title = item.stationName;
+        NSString *bikeRAGColor = [NSString new];
+        NSString *dockRAGColor = [NSString new];
 
-        NSInteger NumberOfBikes; NSInteger NumberofDocks;
-        NumberOfBikes = [point.availableBikes intValue];
-        NumberofDocks = [point.availableDocks intValue];
+        float percentageOfFreeBikes; float percentageOfFreeDocks;
 
-        NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available", (long)NumberOfBikes, (long)NumberofDocks];
+        percentageOfFreeBikes = (float) NumberOfBikes/NumberOfAllDocks;
+        percentageOfFreeDocks = (float) NumberOfDocks/NumberOfAllDocks;
 
-        point.subtitle = detailText;
+        if (percentageOfFreeBikes < 0.34)
+        {
+            bikeRAGColor = @"RED";
+        }
+        else if (percentageOfFreeBikes >= 0.34 && percentageOfFreeBikes <= 0.66)
+        {
+            bikeRAGColor = @"YELLOW";
+        }
+        else if (percentageOfFreeBikes > 0.66)
+        {
+            bikeRAGColor = @"GREEN";
+        }
 
-        [self.annotationsMapView addAnnotation:point];
-        [self.annotationsMapView reloadInputViews];
+        if (percentageOfFreeDocks < 0.34)
+        {
+            dockRAGColor = @"RED";
+        }
+        else if (percentageOfFreeDocks >= 0.34 && percentageOfFreeDocks <= 0.66)
+        {
+            dockRAGColor = @"YELLOW";
+        }
+        else if (percentageOfFreeDocks > 0.66)
+        {
+            dockRAGColor = @"GREEN";
+        }
+
+        if ([bikeRAGColor isEqualToString:@"RED"] && [dockRAGColor isEqualToString:@"RED"])
+        {
+
+            RedRed *point = [RedRed new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+
+        }
+        else if ([bikeRAGColor isEqualToString:@"RED"] && [dockRAGColor isEqualToString:@"YELLOW"])
+        {
+
+            RedYellow *point = [RedYellow new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+
+        }
+        else if ([bikeRAGColor isEqualToString:@"RED"] && [dockRAGColor isEqualToString:@"GREEN"])
+        {
+
+            RedGreen *point = [RedGreen new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+
+        }
+        else if ([bikeRAGColor isEqualToString:@"YELLOW"] && [dockRAGColor isEqualToString:@"RED"])
+        {
+            YellowRed *point = [YellowRed new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+        }
+        else if ([bikeRAGColor isEqualToString:@"YELLOW"] && [dockRAGColor isEqualToString:@"YELLOW"])
+        {
+            YellowYellow *point = [YellowYellow new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+        }
+        else if ([bikeRAGColor isEqualToString:@"YELLOW"] && [dockRAGColor isEqualToString:@"GREEN"])
+        {
+            YellowGreen *point = [YellowGreen new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+        }
+        else if ([bikeRAGColor isEqualToString:@"GREEN"] && [dockRAGColor isEqualToString:@"RED"])
+        {
+            GreenRed *point = [GreenRed new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+        }
+        else if ([bikeRAGColor isEqualToString:@"GREEN"] && [dockRAGColor isEqualToString:@"YELLOW"])
+        {
+            GreenYellow *point = [GreenYellow new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+        }
+        else if ([bikeRAGColor isEqualToString:@"GREEN"] && [dockRAGColor isEqualToString:@"GREEN"])
+        {
+            GreenGreen *point = [GreenGreen new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+        }
+
+
+//        DivvyMKPointAnnotation *point = [DivvyMKPointAnnotation new];
+//        point.coordinate = CLLocationCoordinate2DMake(item.placemark.coordinate.latitude, item.placemark.coordinate.longitude);
+//        point.stationName = item.stationName;
+//        point.availableBikes = item.availableBikes;
+//        point.availableDocks = item.availableDocks;
+//
+//        point.title = item.stationName;
+//        NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available", (long)NumberOfBikes, (long)NumberOfDocks];
+//
+//        point.subtitle = detailText;
+//
+//        point.bikeDockPinColor = item.bikeDockPinColor;
+
+//        [self.annotationsMapView addAnnotation:point];
+//        [self.annotationsMapView reloadInputViews];
     }
 }
 

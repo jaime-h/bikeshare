@@ -18,6 +18,7 @@
 @property NSString *availableDocks;
 @property NSString *totalDocks;
 @property NSString *availableBikes;
+@property NSString *bikeDockPinColor;
 
 
 @end
