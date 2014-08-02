@@ -64,10 +64,10 @@
     MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:nil];
     pin.canShowCallout = YES;
     pin.leftCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    pin.animatesDrop = YES;
+    pin.animatesDrop = NO;
     UIImageView *iconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bike-1"]];
     pin.leftCalloutAccessoryView = iconView;
-    pin.pinColor = MKPinAnnotationColorPurple;
+//    pin.pinColor = MKPinAnnotationColorPurple;
     return pin;
 }
 
@@ -81,21 +81,27 @@
         return nil;
     }
 
-    else if ([annotation isKindOfClass:[RedRed class]])
-    {
-        MKPinAnnotationView *pin;
-        pin = [self createGenericPicHeader:annotation];
-        pin.image = [UIImage imageNamed:@"RedRed"];
-        return pin;
-    }
     else if ([annotation isKindOfClass:[RedYellow class]])
     {
         MKPinAnnotationView *pin;
         pin = [self createGenericPicHeader:annotation];
-        pin.image = [UIImage imageNamed:@"RedYellow"];
+        pin.image = [UIImage imageNamed:@"RedYellow-1"];
         return pin;
     }
-
+    else if ([annotation isKindOfClass:[YellowYellow class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"YellowYellow-1"];
+        return pin;
+    }
+    else if ([annotation isKindOfClass:[GreenRed class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"GreenRed-1"];
+        return pin;
+    }
     else if ([annotation isKindOfClass:[RedGreen class]])
     {
         MKPinAnnotationView *pin;
@@ -107,42 +113,35 @@
     {
         MKPinAnnotationView *pin;
         pin = [self createGenericPicHeader:annotation];
-        pin.image = [UIImage imageNamed:@"YellowRed"];
-        return pin;
-    }
-    else if ([annotation isKindOfClass:[YellowYellow class]])
-    {
-        MKPinAnnotationView *pin;
-        pin = [self createGenericPicHeader:annotation];
-        pin.image = [UIImage imageNamed:@"YellowYellow-1"];
+        pin.image = [UIImage imageNamed:@"YellowRed-1"];
         return pin;
     }
     else if ([annotation isKindOfClass:[YellowGreen class]])
     {
         MKPinAnnotationView *pin;
         pin = [self createGenericPicHeader:annotation];
-        pin.image = [UIImage imageNamed:@"YellowGreen"];
-        return pin;
-    }
-    else if ([annotation isKindOfClass:[GreenRed class]])
-    {
-        MKPinAnnotationView *pin;
-        pin = [self createGenericPicHeader:annotation];
-        pin.image = [UIImage imageNamed:@"GreenRed-1"];
+        pin.image = [UIImage imageNamed:@"YellowGreen-1"];
         return pin;
     }
     else if ([annotation isKindOfClass:[GreenYellow class]])
     {
         MKPinAnnotationView *pin;
         pin = [self createGenericPicHeader:annotation];
-        pin.image = [UIImage imageNamed:@"GreenYellow"];
+        pin.image = [UIImage imageNamed:@"GreenYellow-1"];
         return pin;
     }
     else if ([annotation isKindOfClass:[GreenGreen class]])
     {
         MKPinAnnotationView *pin;
         pin = [self createGenericPicHeader:annotation];
-        pin.image = [UIImage imageNamed:@"GreenGreen"];
+        pin.image = [UIImage imageNamed:@"GreenGreen-1"];
+        return pin;
+    }
+    else if ([annotation isKindOfClass:[RedRed class]])
+    {
+        MKPinAnnotationView *pin;
+        pin = [self createGenericPicHeader:annotation];
+        pin.image = [UIImage imageNamed:@"RedRed-1"];
         return pin;
     }
     else
@@ -222,18 +221,7 @@
             dockRAGColor = @"GREEN";
         }
 
-        if ([bikeRAGColor isEqualToString:@"RED"] && [dockRAGColor isEqualToString:@"RED"])
-        {
-
-            RedRed *point = [RedRed new];
-
-            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
-
-            [self.annotationsMapView addAnnotation:point];
-            [self.annotationsMapView reloadInputViews];
-
-        }
-        else if ([bikeRAGColor isEqualToString:@"RED"] && [dockRAGColor isEqualToString:@"YELLOW"])
+        if ([bikeRAGColor isEqualToString:@"RED"] && [dockRAGColor isEqualToString:@"YELLOW"])
         {
 
             RedYellow *point = [RedYellow new];
@@ -308,6 +296,17 @@
 
             [self.annotationsMapView addAnnotation:point];
             [self.annotationsMapView reloadInputViews];
+        }
+        else if ([bikeRAGColor isEqualToString:@"RED"] && [dockRAGColor isEqualToString:@"RED"])
+        {
+
+            RedRed *point = [RedRed new];
+
+            [self createAnnotationsFromItems:item point:point NumberOfDocks:NumberOfDocks NumberOfBikes:NumberOfBikes];
+
+            [self.annotationsMapView addAnnotation:point];
+            [self.annotationsMapView reloadInputViews];
+            
         }
 
 
