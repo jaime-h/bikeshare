@@ -83,8 +83,8 @@
     DivyAddressPoint *location = transferableDivvyLocations[indexPath.row];
     cell.textLabel.text = location.stationName;
 
-//    UIColor *myColor = [UIColor pxColorWithHexValue:@"#3DB7E4"];
-//    cell.textLabel.textColor = myColor;
+    UIColor *myColor = [UIColor pxColorWithHexValue:@"#3DB7E4"];
+    cell.textLabel.textColor = myColor;
 
     NSInteger NumberOfBikes; NSInteger NumberOfDocks; NSInteger NumberOfAllDocks;
     NumberOfBikes = [location.availableBikes intValue];
@@ -101,6 +101,8 @@
     int distance = roundf([location.placemark.location distanceFromLocation:self.locationManager.location]);
 
     NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available, Dist <%2.2f> mi", (long)NumberOfBikes, (long)NumberOfDocks, (distance/1609.34)];
+
+/*
 
     // Create an attributed string to show the user the state of either the bikes or docks..
     // AKA RAG status of open bikes and docks (Red/Amber/Green)
@@ -162,6 +164,12 @@
     [attrString endEditing];
 
     cell.detailTextLabel.attributedText = attrString;
+ 
+    */
+
+    cell.detailTextLabel.text = detailText;
+    cell.detailTextLabel.textColor = myColor;
+
     return cell;
 }
 

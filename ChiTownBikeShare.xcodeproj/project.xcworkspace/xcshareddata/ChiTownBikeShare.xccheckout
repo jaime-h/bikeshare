@@ -12,22 +12,34 @@
 	<dict>
 		<key>57B34CBE-83D2-4A80-9880-C6356B17F819</key>
 		<string>https://bitbucket.org/jaime-h/bikeshare.git</string>
+		<key>E298CB25E4B76D48953338634C5896751EBA45BC</key>
+		<string>https://bitbucket.org/jaime-h/bikeshare.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ChiTownBikeShare.xcodeproj/project.xcworkspace</string>
+	<string>ChiTownBikeShare.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>57B34CBE-83D2-4A80-9880-C6356B17F819</key>
+		<string>../../../DivvyMapperThingy</string>
+		<key>E298CB25E4B76D48953338634C5896751EBA45BC</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://bitbucket.org/jaime-h/bikeshare.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>57B34CBE-83D2-4A80-9880-C6356B17F819</string>
+	<string>E298CB25E4B76D48953338634C5896751EBA45BC</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E298CB25E4B76D48953338634C5896751EBA45BC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>bikeshare</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

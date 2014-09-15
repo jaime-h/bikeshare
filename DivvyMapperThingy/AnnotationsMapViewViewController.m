@@ -80,7 +80,7 @@
         // This will return the "blue dot"
         return nil;
     }
-
+/*
     else if ([annotation isKindOfClass:[RedYellow class]])
     {
         MKPinAnnotationView *pin;
@@ -144,6 +144,9 @@
         pin.image = [UIImage imageNamed:@"RedRed-1"];
         return pin;
     }
+ 
+    */
+
     else
     {
         // Fall through for any other scenarios
