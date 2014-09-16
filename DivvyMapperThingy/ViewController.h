@@ -10,5 +10,6 @@
 
 @interface ViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UITableView *myTableView;
+@property (nonatomic) NSArray *transferableDivvyLocations;
 
 @end

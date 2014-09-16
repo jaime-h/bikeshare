@@ -7,17 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
-#import <CoreLocation/CoreLocation.h>
-#import "ViewController.h"
-#import "DivyAddressPoint.h"
+@class MKMapView;
+
+@protocol AnnotationsMapViewViewControllerDelegate;
 
 @interface AnnotationsMapViewViewController : UIViewController
 
-@property CLLocationManager *locationManager;
-@property CLLocation *currentLocation;
-@property CLLocationCoordinate2D currentCenter;
-@property int currenDist;
 @property (strong, nonatomic) IBOutlet MKMapView *annotationsMapView; // MKMapView
 
 @property (strong, nonatomic) NSArray *annotationsArray;

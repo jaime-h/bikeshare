@@ -8,16 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		6F0F3CD2191B3305008C8E53 /* DivvyMKPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0F3CD1191B3305008C8E53 /* DivvyMKPointAnnotation.m */; };
-		6F6E429F198B5CB200377769 /* RedRed.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E429E198B5CB200377769 /* RedRed.m */; };
-		6F6E42A2198B5CBE00377769 /* RedYellow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E42A1198B5CBE00377769 /* RedYellow.m */; };
-		6F6E42A5198B5CCB00377769 /* RedGreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E42A4198B5CCB00377769 /* RedGreen.m */; };
-		6F6E42A8198B5CD600377769 /* YellowRed.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E42A7198B5CD600377769 /* YellowRed.m */; };
-		6F6E42AB198B5CE300377769 /* YellowYellow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E42AA198B5CE300377769 /* YellowYellow.m */; };
-		6F6E42AE198B5CF100377769 /* YellowGreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E42AD198B5CF100377769 /* YellowGreen.m */; };
-		6F6E42B1198B5D0000377769 /* GreenRed.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E42B0198B5D0000377769 /* GreenRed.m */; };
-		6F6E42B4198B5D0C00377769 /* GreenYellow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E42B3198B5D0C00377769 /* GreenYellow.m */; };
-		6F6E42B7198B5D1C00377769 /* GreenGreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E42B6198B5D1C00377769 /* GreenGreen.m */; };
-		6F6E42BB198BE9D300377769 /* MasterPointAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6E42BA198BE9D300377769 /* MasterPointAnnotation.m */; };
+		6F805CE619C88FB80099D397 /* ConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F805CE519C88FB80099D397 /* ConnectionManager.m */; };
+		6F805CEC19C890230099D397 /* JSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F805CE919C890230099D397 /* JSONParser.m */; };
+		6F805CED19C890230099D397 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F805CEB19C890230099D397 /* LocationManager.m */; };
+		6F805CF019C8A4BC0099D397 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F805CEF19C8A4BC0099D397 /* Utilities.m */; };
+		6F805CF319C8A5B20099D397 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F805CF219C8A5B20099D397 /* Constants.m */; };
 		6F9B3FC119199882003C451A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9B3FC019199882003C451A /* Foundation.framework */; };
 		6F9B3FC319199882003C451A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9B3FC219199882003C451A /* CoreGraphics.framework */; };
 		6F9B3FC519199882003C451A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9B3FC419199882003C451A /* UIKit.framework */; };
@@ -53,26 +48,16 @@
 /* Begin PBXFileReference section */
 		6F0F3CD0191B3305008C8E53 /* DivvyMKPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DivvyMKPointAnnotation.h; sourceTree = "<group>"; };
 		6F0F3CD1191B3305008C8E53 /* DivvyMKPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DivvyMKPointAnnotation.m; sourceTree = "<group>"; };
-		6F6E429D198B5CB200377769 /* RedRed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedRed.h; path = DivvyMapperThingy/RedRed.h; sourceTree = "<group>"; };
-		6F6E429E198B5CB200377769 /* RedRed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedRed.m; path = DivvyMapperThingy/RedRed.m; sourceTree = "<group>"; };
-		6F6E42A0198B5CBE00377769 /* RedYellow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedYellow.h; path = DivvyMapperThingy/RedYellow.h; sourceTree = "<group>"; };
-		6F6E42A1198B5CBE00377769 /* RedYellow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedYellow.m; path = DivvyMapperThingy/RedYellow.m; sourceTree = "<group>"; };
-		6F6E42A3198B5CCB00377769 /* RedGreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedGreen.h; path = DivvyMapperThingy/RedGreen.h; sourceTree = "<group>"; };
-		6F6E42A4198B5CCB00377769 /* RedGreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedGreen.m; path = DivvyMapperThingy/RedGreen.m; sourceTree = "<group>"; };
-		6F6E42A6198B5CD600377769 /* YellowRed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YellowRed.h; path = DivvyMapperThingy/YellowRed.h; sourceTree = "<group>"; };
-		6F6E42A7198B5CD600377769 /* YellowRed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YellowRed.m; path = DivvyMapperThingy/YellowRed.m; sourceTree = "<group>"; };
-		6F6E42A9198B5CE300377769 /* YellowYellow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YellowYellow.h; path = DivvyMapperThingy/YellowYellow.h; sourceTree = "<group>"; };
-		6F6E42AA198B5CE300377769 /* YellowYellow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YellowYellow.m; path = DivvyMapperThingy/YellowYellow.m; sourceTree = "<group>"; };
-		6F6E42AC198B5CF100377769 /* YellowGreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YellowGreen.h; path = DivvyMapperThingy/YellowGreen.h; sourceTree = "<group>"; };
-		6F6E42AD198B5CF100377769 /* YellowGreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YellowGreen.m; path = DivvyMapperThingy/YellowGreen.m; sourceTree = "<group>"; };
-		6F6E42AF198B5D0000377769 /* GreenRed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GreenRed.h; path = DivvyMapperThingy/GreenRed.h; sourceTree = "<group>"; };
-		6F6E42B0198B5D0000377769 /* GreenRed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GreenRed.m; path = DivvyMapperThingy/GreenRed.m; sourceTree = "<group>"; };
-		6F6E42B2198B5D0C00377769 /* GreenYellow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GreenYellow.h; path = DivvyMapperThingy/GreenYellow.h; sourceTree = "<group>"; };
-		6F6E42B3198B5D0C00377769 /* GreenYellow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GreenYellow.m; path = DivvyMapperThingy/GreenYellow.m; sourceTree = "<group>"; };
-		6F6E42B5198B5D1C00377769 /* GreenGreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GreenGreen.h; path = DivvyMapperThingy/GreenGreen.h; sourceTree = "<group>"; };
-		6F6E42B6198B5D1C00377769 /* GreenGreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GreenGreen.m; path = DivvyMapperThingy/GreenGreen.m; sourceTree = "<group>"; };
-		6F6E42B9198BE9D300377769 /* MasterPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterPointAnnotation.h; sourceTree = "<group>"; };
-		6F6E42BA198BE9D300377769 /* MasterPointAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterPointAnnotation.m; sourceTree = "<group>"; };
+		6F805CE419C88FB80099D397 /* ConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager.h; sourceTree = "<group>"; };
+		6F805CE519C88FB80099D397 /* ConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionManager.m; sourceTree = "<group>"; };
+		6F805CE819C890230099D397 /* JSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONParser.h; sourceTree = "<group>"; };
+		6F805CE919C890230099D397 /* JSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONParser.m; sourceTree = "<group>"; };
+		6F805CEA19C890230099D397 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		6F805CEB19C890230099D397 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
+		6F805CEE19C8A4BC0099D397 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		6F805CEF19C8A4BC0099D397 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
+		6F805CF119C8A5B20099D397 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		6F805CF219C8A5B20099D397 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		6F9B3FBD19199882003C451A /* ChiTownBikeShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChiTownBikeShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F9B3FC019199882003C451A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6F9B3FC219199882003C451A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -130,38 +115,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6F6E42B8198B5D2600377769 /* Color Annotation Classes */ = {
+		6F805CE719C88FE50099D397 /* LocationUilities */ = {
 			isa = PBXGroup;
 			children = (
-				6F6E429D198B5CB200377769 /* RedRed.h */,
-				6F6E429E198B5CB200377769 /* RedRed.m */,
-				6F6E42A0198B5CBE00377769 /* RedYellow.h */,
-				6F6E42A1198B5CBE00377769 /* RedYellow.m */,
-				6F6E42A3198B5CCB00377769 /* RedGreen.h */,
-				6F6E42A4198B5CCB00377769 /* RedGreen.m */,
-				6F6E42A6198B5CD600377769 /* YellowRed.h */,
-				6F6E42A7198B5CD600377769 /* YellowRed.m */,
-				6F6E42A9198B5CE300377769 /* YellowYellow.h */,
-				6F6E42AA198B5CE300377769 /* YellowYellow.m */,
-				6F6E42AC198B5CF100377769 /* YellowGreen.h */,
-				6F6E42AD198B5CF100377769 /* YellowGreen.m */,
-				6F6E42AF198B5D0000377769 /* GreenRed.h */,
-				6F6E42B0198B5D0000377769 /* GreenRed.m */,
-				6F6E42B2198B5D0C00377769 /* GreenYellow.h */,
-				6F6E42B3198B5D0C00377769 /* GreenYellow.m */,
-				6F6E42B5198B5D1C00377769 /* GreenGreen.h */,
-				6F6E42B6198B5D1C00377769 /* GreenGreen.m */,
-				6F6E42B9198BE9D300377769 /* MasterPointAnnotation.h */,
-				6F6E42BA198BE9D300377769 /* MasterPointAnnotation.m */,
+				6F805CE419C88FB80099D397 /* ConnectionManager.h */,
+				6F805CE519C88FB80099D397 /* ConnectionManager.m */,
+				6F805CF119C8A5B20099D397 /* Constants.h */,
+				6F805CF219C8A5B20099D397 /* Constants.m */,
+				6F805CE819C890230099D397 /* JSONParser.h */,
+				6F805CE919C890230099D397 /* JSONParser.m */,
+				6F805CEA19C890230099D397 /* LocationManager.h */,
+				6F805CEB19C890230099D397 /* LocationManager.m */,
+				6F805CEE19C8A4BC0099D397 /* Utilities.h */,
+				6F805CEF19C8A4BC0099D397 /* Utilities.m */,
+				6FDDABF81922782900D9EACF /* UIColor+PXExtentions.h */,
+				6FDDABF91922782900D9EACF /* UIColor+PXExtentions.m */,
 			);
-			name = "Color Annotation Classes";
+			name = LocationUilities;
+			path = DivvyMapperThingy;
+			sourceTree = "<group>";
+		};
+		6F805CF419C8ABA00099D397 /* Annotations */ = {
+			isa = PBXGroup;
+			children = (
+				6F0F3CD0191B3305008C8E53 /* DivvyMKPointAnnotation.h */,
+				6F0F3CD1191B3305008C8E53 /* DivvyMKPointAnnotation.m */,
+				6F9B3FF51919A896003C451A /* DivyAddressPoint.h */,
+				6F9B3FF61919A896003C451A /* DivyAddressPoint.m */,
+			);
+			name = Annotations;
+			path = DivvyMapperThingy;
 			sourceTree = "<group>";
 		};
 		6F9B3FB419199882003C451A = {
 			isa = PBXGroup;
 			children = (
-				6F6E42B8198B5D2600377769 /* Color Annotation Classes */,
-				6F9B3FC619199882003C451A /* DivvyMapperThingy */,
+				6F805CF419C8ABA00099D397 /* Annotations */,
+				6F805CE719C88FE50099D397 /* LocationUilities */,
+				6F9B3FC619199882003C451A /* ViewControllers */,
 				6F9B3FE519199882003C451A /* DivvyMapperThingyTests */,
 				6F9B3FBF19199882003C451A /* Frameworks */,
 				6F9B3FBE19199882003C451A /* Products */,
@@ -190,7 +181,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6F9B3FC619199882003C451A /* DivvyMapperThingy */ = {
+		6F9B3FC619199882003C451A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				6F9B3FCF19199882003C451A /* AppDelegate.h */,
@@ -200,17 +191,12 @@
 				6FAB39F919251DB600F18A17 /* DirectionsAndMapViewController.m */,
 				6FC0CDD8191ABA86005C92CE /* AnnotationsMapViewViewController.h */,
 				6FC0CDD9191ABA86005C92CE /* AnnotationsMapViewViewController.m */,
-				6F0F3CD0191B3305008C8E53 /* DivvyMKPointAnnotation.h */,
-				6F0F3CD1191B3305008C8E53 /* DivvyMKPointAnnotation.m */,
 				6F9B3FD519199882003C451A /* ViewController.h */,
 				6F9B3FD619199882003C451A /* ViewController.m */,
-				6FDDABF81922782900D9EACF /* UIColor+PXExtentions.h */,
-				6FDDABF91922782900D9EACF /* UIColor+PXExtentions.m */,
-				6F9B3FF51919A896003C451A /* DivyAddressPoint.h */,
-				6F9B3FF61919A896003C451A /* DivyAddressPoint.m */,
 				6F9B3FD819199882003C451A /* Images.xcassets */,
 				6F9B3FC719199882003C451A /* Supporting Files */,
 			);
+			name = ViewControllers;
 			path = DivvyMapperThingy;
 			sourceTree = "<group>";
 		};
@@ -343,24 +329,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F805CE619C88FB80099D397 /* ConnectionManager.m in Sources */,
 				6F0F3CD2191B3305008C8E53 /* DivvyMKPointAnnotation.m in Sources */,
-				6F6E42AE198B5CF100377769 /* YellowGreen.m in Sources */,
 				6F9B3FD719199882003C451A /* ViewController.m in Sources */,
+				6F805CED19C890230099D397 /* LocationManager.m in Sources */,
 				6F9B3FF71919A896003C451A /* DivyAddressPoint.m in Sources */,
-				6F6E42A5198B5CCB00377769 /* RedGreen.m in Sources */,
-				6F6E42B4198B5D0C00377769 /* GreenYellow.m in Sources */,
-				6F6E429F198B5CB200377769 /* RedRed.m in Sources */,
 				6FDDABFA1922782900D9EACF /* UIColor+PXExtentions.m in Sources */,
+				6F805CF019C8A4BC0099D397 /* Utilities.m in Sources */,
+				6F805CF319C8A5B20099D397 /* Constants.m in Sources */,
 				6F9B3FD119199882003C451A /* AppDelegate.m in Sources */,
 				6FAB39FA19251DB600F18A17 /* DirectionsAndMapViewController.m in Sources */,
-				6F6E42BB198BE9D300377769 /* MasterPointAnnotation.m in Sources */,
-				6F6E42A2198B5CBE00377769 /* RedYellow.m in Sources */,
-				6F6E42A8198B5CD600377769 /* YellowRed.m in Sources */,
-				6F6E42B7198B5D1C00377769 /* GreenGreen.m in Sources */,
 				6F9B3FCD19199882003C451A /* main.m in Sources */,
+				6F805CEC19C890230099D397 /* JSONParser.m in Sources */,
 				6FC0CDDA191ABA86005C92CE /* AnnotationsMapViewViewController.m in Sources */,
-				6F6E42B1198B5D0000377769 /* GreenRed.m in Sources */,
-				6F6E42AB198B5CE300377769 /* YellowYellow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,6 +473,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DivvyMapperThingy/ChiTownBikeShare-Prefix.pch";
 				INFOPLIST_FILE = "DivvyMapperThingy/ChiTownBikeShare-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = ChiTownBikeShare;
 				PROVISIONING_PROFILE = "A7318315-E721-4E3A-9FAE-4A8892649E5B";
 				WRAPPER_EXTENSION = app;
@@ -508,6 +490,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DivvyMapperThingy/ChiTownBikeShare-Prefix.pch";
 				INFOPLIST_FILE = "DivvyMapperThingy/ChiTownBikeShare-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = ChiTownBikeShare;
 				PROVISIONING_PROFILE = "A7318315-E721-4E3A-9FAE-4A8892649E5B";
 				WRAPPER_EXTENSION = app;

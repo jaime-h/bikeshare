@@ -6,81 +6,95 @@
 //  Copyright (c) 2014 Jaime Hernandez. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
+
 #import "ViewController.h"
 #import "DivyAddressPoint.h"
 #import "AnnotationsMapViewViewController.h"
 #import "UIColor+PXExtentions.h"
 #import "DirectionsAndMapViewController.h"
 
+#import "LocationManager.h"
+#import "ConnectionManager.h"
+#import "JSONParser.h"
+#import "Utilities.h"
+#import "Constants.h"
+
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-@interface ViewController () <UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UIAccelerometerDelegate, UIAlertViewDelegate>
+@interface ViewController () <UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UIAccelerometerDelegate, UIAlertViewDelegate, ConnectionManagerDelegate >
 {
-    NSArray *transferableDivvyLocations;
-    NSMutableArray *sortArray;
-    DivyAddressPoint *divvyLocation;
-
-    UIColor *ragColorRed;
-    UIColor *ragColorAmber;
-    UIColor *ragColorGreen;
-
+    ConnectionManager* connectionManager;
+    CLLocationManager *locationManager;
+    CLLocation *currentLocation;
+    MKCoordinateSpan mapSpan;
+    CLLocationCoordinate2D mapCenter;
 }
 
-@property CLLocationManager *locationManager;
-@property CLLocation *currentLocation;
 @end
 
 @implementation ViewController
 
+#pragma mark ViewController LifeCycle 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self gatherDivvyData];
-    
+
     // http://stackoverflow.com/questions/12497940/uirefreshcontrol-without-uitableviewcontroller/12502450#12502450
     // http://stackoverflow.com/questions/10291537/pull-to-refresh-uitableview-without-uitableviewcontroller?rq=1
 
-    [self initRAGColors];
-    
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
     [self.myTableView addSubview:refreshControl];
-    
+    locationManager = [[LocationManager sharedInstance]locationManager];
+    locationManager.delegate = self;
+    [locationManager requestWhenInUseAuthorization];
+    [locationManager startUpdatingLocation];
+    mapSpan = MKCoordinateSpanMake(0.025, 0.025);
+
+    //create the connection manager and set the delegate
+    connectionManager = [ConnectionManager sharedInstance];
+    connectionManager.delegate = self;
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    self.locationManager = [CLLocationManager new];
-    self.locationManager.delegate = self;
-    [self.locationManager startMonitoringSignificantLocationChanges];
+    [super viewWillAppear:animated];
+    [locationManager startMonitoringSignificantLocationChanges];
+    [self.myTableView setSeparatorColor:COLOR];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLOR}];
+    [self.myTableView reloadData];
 
-    UIColor *mycolor = [UIColor pxColorWithHexValue:@"#3DB7E4"];
+}
 
-    [self.myTableView setSeparatorColor:mycolor];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:mycolor}];
-
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [locationManager stopUpdatingLocation];
 }
 
 -(void)handleRefresh:(UIRefreshControl *)refreshControl
 {
-
-    [self gatherDivvyData];
-    
+    [connectionManager downloadStationData];
     [refreshControl endRefreshing];
-
 }
+
+#pragma mark TableViewDelegate Methods
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return transferableDivvyLocations.count;
+    return _transferableDivvyLocations.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReuseThisCellIdentifier"];
 
-    DivyAddressPoint *location = transferableDivvyLocations[indexPath.row];
+    DivyAddressPoint *location = _transferableDivvyLocations[indexPath.row];
     cell.textLabel.text = location.stationName;
 
     UIColor *myColor = [UIColor pxColorWithHexValue:@"#3DB7E4"];
@@ -98,74 +112,9 @@
     percentageOfFreeBikes = (float) NumberOfBikes/NumberOfAllDocks;
     percentageOfFreeDocks = (float) NumberOfDocks/NumberOfAllDocks;
 
-    int distance = roundf([location.placemark.location distanceFromLocation:self.locationManager.location]);
+    int distance = roundf([location.placemark.location distanceFromLocation:locationManager.location]);
 
     NSString *detailText = [NSString stringWithFormat:@"%li Bikes, %li Docks Available, Dist <%2.2f> mi", (long)NumberOfBikes, (long)NumberOfDocks, (distance/1609.34)];
-
-/*
-
-    // Create an attributed string to show the user the state of either the bikes or docks..
-    // AKA RAG status of open bikes and docks (Red/Amber/Green)
-
-    NSString *colorString = detailText;
-    NSArray *components = [colorString componentsSeparatedByString:@","];
-    NSRange bikeRange = [colorString rangeOfString:[components objectAtIndex:0]];
-    NSRange dockRange = [colorString rangeOfString:[components objectAtIndex:1]];
-
-     NSMutableAttributedString *attrString = [[ NSMutableAttributedString alloc] initWithString:colorString];
-
-    [attrString beginEditing];
-
-    // Bottom 1/3 are red     [UIColor colorWithRed:0.884739 green:0.0 blue:0.0819708 alpha:1.0]
-    // Midlle 1/3 are yellow  [UIColor colorWithRed:0.947441 green:0.740463 blue:0.0295548 alpha:1.0]
-    // Top 1/3 are green      [UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0]
-
-    if (percentageOfFreeBikes < 0.34)
-    {
-        [attrString addAttribute: NSForegroundColorAttributeName
-                           value:ragColorRed
-                           range:bikeRange];
-    }
-    else if (percentageOfFreeBikes >= 0.34 && percentageOfFreeBikes <= 0.66)
-    {
-    [attrString addAttribute: NSForegroundColorAttributeName
-                       value:ragColorAmber
-                       range:bikeRange];
-
-    }
-    else if (percentageOfFreeBikes > 0.66)
-    {
-    [attrString addAttribute: NSForegroundColorAttributeName
-                       value:ragColorGreen
-                       range:bikeRange];
-    }
-
-    if (percentageOfFreeDocks < 0.34)
-    {
-        [attrString addAttribute: NSForegroundColorAttributeName
-                           value:ragColorRed
-                           range:dockRange];
-    }
-    else if (percentageOfFreeDocks >= 0.34 && percentageOfFreeDocks <= 0.66)
-    {
-        [attrString addAttribute: NSForegroundColorAttributeName
-                           value:ragColorAmber
-                           range:dockRange];
-
-    }
-    else if (percentageOfFreeDocks > 0.66)
-    {
-        [attrString addAttribute: NSForegroundColorAttributeName
-                           value:ragColorGreen
-                           range:dockRange];
-    }
-
-
-    [attrString endEditing];
-
-    cell.detailTextLabel.attributedText = attrString;
- 
-    */
 
     cell.detailTextLabel.text = detailText;
     cell.detailTextLabel.textColor = myColor;
@@ -193,93 +142,6 @@
     [av addMotionEffect:group];
 }
 
--(void)gatherDivvyData
-{
-
-    NSString *urlString   = [NSString stringWithFormat:@"http://divvybikes.com/stations/json"];
-    NSURL *url            = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
-    {
-        if (connectionError != nil)
-        {
-            UIAlertView *av = [[UIAlertView alloc]initWithTitle:@"No Internet Connection"
-                                                        message:@"Please try again in a few minutes"
-                                                       delegate:nil //set delegate for UIAlertView
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-            
-            [self addParallax:av];
-
-            [av show];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        }
-        else
-        {
-            NSDictionary *outerContainer = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&connectionError];
-            NSArray *allDivvyLocations = outerContainer[@"stationBeanList"];
-
-            sortArray = [NSMutableArray new];
-            [sortArray removeAllObjects];
-
-            for (NSDictionary *point in allDivvyLocations)
-            {
-                DivyAddressPoint *divvyLocationPoint = [DivyAddressPoint new];
-
-                divvyLocationPoint.stationName = point[@"stationName"];
-                divvyLocationPoint.address     = point[@"location"];
-
-                divvyLocationPoint.lat         = point[@"latitude"];
-                divvyLocationPoint.lng         = point[@"longitude"];
-
-
-                CGFloat latitude  = (CGFloat)[divvyLocationPoint.lat floatValue];
-                CGFloat longitude = (CGFloat)[divvyLocationPoint.lng floatValue];
-
-                CLLocationCoordinate2D placeCoordinate = CLLocationCoordinate2DMake(latitude, longitude);
-                MKPlacemark *placemark = [[MKPlacemark alloc]initWithCoordinate:placeCoordinate addressDictionary:nil];
-
-                divvyLocationPoint.placemark = placemark;
-
-                divvyLocationPoint.availableBikes = point[@"availableBikes"];
-                divvyLocationPoint.availableDocks = point[@"availableDocks"];
-
-                // Adding total docks for calculation - 07272014
-                divvyLocationPoint.totalDocks     = point[@"totalDocks"];
-
-                [sortArray addObject:divvyLocationPoint];
-
-            }
-
-            NSArray *mapItems = sortArray;
-
-            mapItems = [mapItems sortedArrayUsingComparator:^NSComparisonResult(MKMapItem* obj1, MKMapItem* obj2)
-                        {
-                            float d1 = [obj1.placemark.location distanceFromLocation:self.locationManager.location];
-                            float d2 = [obj2.placemark.location distanceFromLocation:self.locationManager.location];
-                            if (d1 < d2)
-                            {
-                                return NSOrderedAscending;
-                            }
-                            else
-                            {
-                                return NSOrderedDescending;
-                            }
-
-                        }];
-
-            transferableDivvyLocations = mapItems;
-            [self.myTableView reloadData];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        }
-    }];
-
-}
-
-
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 
@@ -288,14 +150,14 @@
             // Pass the data needed to create the annotations on the map
             AnnotationsMapViewViewController *vc = segue.destinationViewController;
             vc.navigationItem.title = @"Bike Share Map";
-            vc.annotationsArray = transferableDivvyLocations;
+            vc.annotationsArray = _transferableDivvyLocations;
         }
         if ([segue.identifier isEqualToString:@"ShowDetails"])
         {
             DirectionsAndMapViewController *vc = segue.destinationViewController;
 
             NSIndexPath *indexPath = [self.myTableView indexPathForSelectedRow];
-            DivyAddressPoint *place = transferableDivvyLocations[indexPath.row];
+            DivyAddressPoint *place = _transferableDivvyLocations[indexPath.row];
 
             vc.divvyStationLocation = place;
             vc.navigationItem.title = @"Detail Route Information";
@@ -313,26 +175,46 @@
         
         [self dismissViewControllerAnimated:YES completion:nil];
         [self.navigationController popViewControllerAnimated:YES];
-
     }
-
  }
+
+
+#pragma mark - CLLocationManager Delegate
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-    
-    // [self pullDivvyData];
     // http://stackoverflow.com/questions/19393458/ios7-core-location-not-updating?rq=1
-    // Trying to see if this helps...
-    NSLog(@"Pulled Divvy Data");
-//    [self.locationManager stopUpdatingLocation];
+    currentLocation = locations.lastObject;
+    [locationManager stopUpdatingLocation];
+
+    //download the data once we have the user location. The user's location is required to filter the list of stations
+    [connectionManager downloadStationData];
 }
 
--(void) initRAGColors
+#pragma mark ConnectionManagerDelegateMethod
+
+/*
+ * Delegate method to receive the list of DivvyAddressPoint (stations) objects. This method receives an array
+ * of station object or an error if the data was not parsed
+ * @param NSArray
+ * @param NSError
+ * @param ConnectionManager
+ */
+- (void)didFinishDownloadingData:(NSArray *)data error:(NSError *)error connectionManager:(ConnectionManager *)manager
 {
-    ragColorRed   =   [UIColor colorWithRed:0.884739 green:0.0 blue:0.0819708 alpha:1.0];
-    ragColorAmber =   [UIColor colorWithRed:0.947441 green:0.740463 blue:0.0295548 alpha:1.0];
-    ragColorGreen =   [UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0];
+    //[self filterStationsByRadius:data];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+
+        //the radius of a rectangle is 1/2 diagonal = sqrt( length^2 + width^2) / 2
+        float radius = sqrtf( (0.025* 0.025) + (0.025* 0.025))  * 0.5;
+        _transferableDivvyLocations = [Utilities filterStationsByRadius:currentLocation stations:data radius:radius];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.myTableView reloadData];
+        });
+    });
+
 }
 
 @end

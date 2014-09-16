@@ -10,6 +10,9 @@
 #import "ViewController.h"
 #import "UIColor+PXExtentions.h"
 
+#import "LocationManager.h"
+#import "DivyAddressPoint.h"
+
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 #import <QuartzCore/QuartzCore.h>
@@ -36,13 +39,13 @@
     return self;
 }
 
+#pragma mark ViewController LifeCycle Methods
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
-    
+    [self.locationManager startUpdatingLocation];
     [self checkLocationServices];
-
-    
 }
 
 - (void)viewDidLoad
@@ -50,10 +53,16 @@
     [super viewDidLoad];
     [self colorTextLables];
 
+    self.locationManager = [[LocationManager sharedInstance] locationManager];
+    self.locationManager.delegate = (id)self;
+    [self.locationManager startUpdatingLocation];
+
     // Create an offset since the textview believes that it is behind something..
     self.divvyLocationDirectionsTextView.contentInset = UIEdgeInsetsMake(-22.5,1.0,0,0.0);
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
+
+#pragma mark viewController Display Methods
 
 -(void)showSelectedDivvyAnnotation
 {
@@ -73,8 +82,11 @@
     annotation.subtitle = detailText;
 
     [self.divvyLocationDetailMap addAnnotation:annotation];
-    [self.divvyLocationDetailMap reloadInputViews];
 
+    //UI updates need to be done on the main thread
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.divvyLocationDetailMap reloadInputViews];
+    });
 }
 
 - (void)addParallax:(UIAlertView *)av
@@ -296,14 +308,13 @@
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied)
     {
         // Everything ok - perform all display methods
-        self.locationManager = [CLLocationManager new];
         [self.divvyLocationDetailMap setShowsUserLocation:YES];
         [self.locationManager startUpdatingLocation];
-        
-        [self determineMapDisplayProperties];
-        
-        [self showSelectedDivvyAnnotation];
-        [self createDirectionsFromLocationToStation];
+
+        //execute the map view configuration and setup methods in the background
+        [self performSelectorInBackground:@selector(determineMapDisplayProperties) withObject:self];
+        [self performSelectorInBackground:@selector(showSelectedDivvyAnnotation) withObject:self];
+        [self performSelectorInBackground:@selector(createDirectionsFromLocationToStation) withObject:self];
     }
     else
     {
