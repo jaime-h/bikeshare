@@ -18,11 +18,4 @@
 #define GREEN  [UIColor colorWithRed:0.175641 green:0.893318 blue:0.15646 alpha:1.0]
 #define COLOR [UIColor pxColorWithHexValue:@"#3DB7E4"]
 
-//define a custom structore to hold the map min and max points
-typedef struct MapViewRect {
-    CGPoint minPoint;
-    CGPoint maxPoint;
-}MapViewRect;
-
-
 @end

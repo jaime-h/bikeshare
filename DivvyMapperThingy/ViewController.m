@@ -21,9 +21,6 @@
 #import "Utilities.h"
 #import "Constants.h"
 
-#import <CoreLocation/CoreLocation.h>
-#import <MapKit/MapKit.h>
-
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, UIAccelerometerDelegate, UIAlertViewDelegate, ConnectionManagerDelegate >
 {
     ConnectionManager* connectionManager;
