@@ -10,4 +10,9 @@
 
 @implementation DivyAddressPoint
 
+- (CLLocationCoordinate2D)location
+{
+    return _location = CLLocationCoordinate2DMake([self.lat floatValue], [self.lng floatValue]);
+}
+
 @end

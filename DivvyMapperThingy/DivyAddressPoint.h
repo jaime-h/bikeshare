@@ -11,14 +11,16 @@
 
 @interface DivyAddressPoint : NSMutableArray
 
-@property NSString *stationName;
-@property NSString *lat;
-@property NSString *lng;
-@property NSString *address;
-@property MKPlacemark *placemark;
-@property NSString *availableDocks;
-@property NSString *totalDocks;
-@property NSString *availableBikes;
-@property NSString *bikeDockPinColor;
+//TODO: change variable types to reflect the desired type
+@property (nonatomic) NSString *stationName;
+@property (nonatomic) NSString *lat;
+@property (nonatomic) NSString *lng;
+@property (nonatomic) NSString *address;
+@property (nonatomic) MKPlacemark *placemark;
+@property (nonatomic) NSString *availableDocks;
+@property (nonatomic) NSString *totalDocks;
+@property (nonatomic) NSString *availableBikes;
+@property (nonatomic) NSString *bikeDockPinColor;
+@property (nonatomic)CLLocationCoordinate2D location;
 
 @end
