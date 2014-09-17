@@ -201,17 +201,37 @@
 {
     //[self filterStationsByRadius:data];
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    if (!error)
+    {
 
-        //the radius of a rectangle is 1/2 diagonal = sqrt( length^2 + width^2) / 2
-        float radius = sqrtf( (0.025* 0.025) + (0.025* 0.025))  * 0.5;
-        _transferableDivvyLocations = [Utilities filterStationsByRadius:currentLocation stations:data radius:radius];
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.myTableView reloadData];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+
+            //the radius of a rectangle is 1/2 diagonal = sqrt( length^2 + width^2) / 2
+            float radius = sqrtf( (0.025* 0.025) + (0.025* 0.025))  * 0.5;
+            _transferableDivvyLocations = [Utilities filterStationsByRadius:currentLocation stations:data radius:radius];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.myTableView reloadData];
+            });
         });
-    });
 
+    }
+    else
+    {
+
+        UIAlertView *av = [[UIAlertView alloc]initWithTitle:error.localizedDescription
+                                                    message:@"Please try again in a few minutes"
+                                                   delegate:self //set delegate for UIAlertView
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles: nil];
+
+        //UI updates must be done on the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [av show];
+        });
+
+    }
 }
 
 @end

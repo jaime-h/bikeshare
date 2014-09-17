@@ -77,13 +77,16 @@
                 }
                 else { //inform the delegate if there was an issue parsing the data
                     [self.delegate didFinishDownloadingData:nil error:error connectionManager:self];
+
+
                 }
                 
             }];
         }
         else { // inform the delegate of there was an issue with the connection
             [self.delegate didFinishDownloadingData:nil error:error connectionManager:self];
-        }
+
+            }
     }];
     
     [task resume];
