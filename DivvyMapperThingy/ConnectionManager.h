@@ -11,7 +11,7 @@
 @protocol ConnectionManagerDelegate;
 
 
-@interface ConnectionManager : NSObject
+@interface ConnectionManager : NSObject <UIAlertViewDelegate>
 
 //class method
 +(ConnectionManager*)sharedInstance;

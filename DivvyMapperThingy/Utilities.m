@@ -85,7 +85,8 @@
                    
                }];
     
-    NSLog(@"utilites class stations %d",results.count);
+//    NSLog(@"utilites class stations %d",results.count);
+
     return results;
 }
 

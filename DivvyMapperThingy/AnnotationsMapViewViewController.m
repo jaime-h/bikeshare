@@ -56,7 +56,6 @@
     self.locationManager.delegate = self;
     self.connectionManager = [ConnectionManager sharedInstance];
     self.connectionManager.delegate = (id)self;
-    [self overrideBackButton];
 
 }
 
@@ -65,23 +64,6 @@
     [super viewWillDisappear:animated];
     [self.locationManager stopUpdatingLocation];
 
-}
-
--(void)overrideBackButton
-{
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
-                                             initWithImage:nil
-                                             style:UIBarButtonItemStylePlain
-                                             target:self
-                                             action:@selector(onBack:)];
-    self.navigationController.interactivePopGestureRecognizer.delegate = (id<UIGestureRecognizerDelegate>)self;
-}
-
--(void)onBack:(UIBarButtonItem*)sender
-{
-    ViewController* vc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
-    vc.transferableDivvyLocations = self.annotationsArray;
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark TableViewDelegate Methods

@@ -13,8 +13,6 @@
 #import "LocationManager.h"
 #import "DivyAddressPoint.h"
 
-#import <CoreLocation/CoreLocation.h>
-#import <MapKit/MapKit.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface DirectionsAndMapViewController () <UIAlertViewDelegate>
