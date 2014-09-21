@@ -27,6 +27,8 @@
 @property (nonatomic) CLLocationCoordinate2D currentCenter;
 @property (nonatomic) int currenDist;
 
+@property (nonatomic) CLLocation* center;
+
 @end
 
 @implementation AnnotationsMapViewViewController
@@ -42,13 +44,6 @@
 
 #pragma mark ViewController LifeCycle Methods
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self checkLocationServices];
-
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -59,6 +54,13 @@
 
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self checkLocationServices];
+
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -66,7 +68,7 @@
 
 }
 
-#pragma mark TableViewDelegate Methods
+#pragma mark MKMapViewDelegate Methods
 
 -(MKAnnotationView*)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
@@ -103,7 +105,7 @@
     {
 
         // Calculate the percentages of Docks & Bikes so that I can drop the corresponding pin..
-        NSInteger NumberOfBikes; NSInteger NumberOfDocks; NSInteger NumberOfAllDocks;
+        NSInteger NumberOfBikes; NSInteger NumberOfDocks;  NSInteger NumberOfAllDocks;
         NumberOfBikes = [item.availableBikes intValue];
         NumberOfDocks = [item.availableDocks intValue];
         NumberOfAllDocks = [item.totalDocks  intValue];
@@ -142,7 +144,28 @@
 
 }
 
+#pragma mark LocationManager delegate
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"didFailWithError: %@",[error userInfo]);
+}
+
+#pragma mark - MKMapView Region changes
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+
+    NSLog(@"span x:%f y:%f", mapView.region.span.latitudeDelta, mapView.region.span.longitudeDelta);
+    NSLog(@"center x:%f y:%f", mapView.region.center.latitude, mapView.region.center.longitude);
+
+    //set the maps center to be the current "user" location
+    self.center = [[CLLocation alloc] initWithLatitude:mapView.region.center.latitude longitude:mapView.region.center.longitude];
+
+    //get new station data
+    [self.connectionManager downloadStationData];
+}
+
 #pragma mark - ConnectionManagerDelegate method
+
 
 /*
  * Delegate method called by the ConnectionManager when the JSON data has been downloaed and parsed
@@ -162,7 +185,7 @@
             //the radius of a rectangle is 1/2 diagonal = sqrt( length^2 + width^2) / 2
             float diagonal = sqrtf( powf(self.annotationsMapView.region.span.longitudeDelta, 2.0) + (powf(self.annotationsMapView.region.span.latitudeDelta, 2.0))) * 0.5;
 
-            self.annotationsArray = [Utilities filterStationsByRadius:self.locationManager.location stations:data radius:diagonal];
+            self.annotationsArray = [Utilities filterStationsByRadius:self.center stations:data radius:diagonal];
 
             //UI updates must be done on the main thread
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -174,7 +197,16 @@
 
     }
     else {
-        //TODO: handle error on data retrieval or parsing
+        UIAlertView *av = [[UIAlertView alloc]initWithTitle:error.localizedDescription
+                                                    message:@"Please try again in a few minutes"
+                                                   delegate:self //set delegate for UIAlertView
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles: nil];
+
+        //UI updates must be done on the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [av show];
+        });
     }
     
 }
@@ -195,7 +227,7 @@
         }
 
 
-        [self.locationManager startUpdatingLocation];
+        //[self.locationManager startUpdatingLocation];
         
         CLLocationCoordinate2D centerCoordinate = self.locationManager.location.coordinate;
         

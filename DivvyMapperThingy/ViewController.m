@@ -61,7 +61,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [locationManager startMonitoringSignificantLocationChanges];
+    //[locationManager startMonitoringSignificantLocationChanges];
+    [locationManager startUpdatingLocation];
     [self.myTableView setSeparatorColor:COLOR];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:COLOR}];
     [self.myTableView reloadData];
@@ -209,6 +210,12 @@
 
             //the radius of a rectangle is 1/2 diagonal = sqrt( length^2 + width^2) / 2
             float radius = sqrtf( (0.025* 0.025) + (0.025* 0.025))  * 0.5;
+
+            // Checking what is in here..... As it is not getting updated...
+            NSLog(@"At didFinishDownloadingData");
+            NSLog(@"locationManager.location --> %@", locationManager.location);
+            NSLog(@"currentLocation          --> %@", currentLocation);
+
             _transferableDivvyLocations = [Utilities filterStationsByRadius:currentLocation stations:data radius:radius];
 
             dispatch_async(dispatch_get_main_queue(), ^{
