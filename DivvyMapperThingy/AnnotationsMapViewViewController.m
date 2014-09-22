@@ -47,7 +47,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.locationManager = [[LocationManager sharedInstance]locationManager];
+    self.locationManager = [LocationManager sharedInstance];
     self.locationManager.delegate = self;
     self.connectionManager = [ConnectionManager sharedInstance];
     self.connectionManager.delegate = (id)self;
@@ -313,6 +313,14 @@
         }
         
     }
+}
+
+#pragma mark Deallocate the location manager 
+// since it is off the screen
+
+- (void)dealloc
+{
+    self.locationManager.delegate =  nil;
 }
 
 @end

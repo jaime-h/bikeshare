@@ -19,30 +19,43 @@
     return self;
 }
 
-+(instancetype)sharedInstance
+//+(instancetype)sharedInstance
+//{
+//    static LocationManager* _sharedInstance;
+//    static dispatch_once_t onceToken;
+//    
+//    dispatch_once(&onceToken, ^{
+//        _sharedInstance = [[LocationManager alloc]init];
+//    });
+//    
+//    return _sharedInstance;
+//}
+
+
++(CLLocationManager*)sharedInstance
 {
-    static LocationManager* _sharedInstance;
+    static id _sharedInstance;
     static dispatch_once_t onceToken;
-    
+
     dispatch_once(&onceToken, ^{
-        _sharedInstance = [[LocationManager alloc]init];
+        _sharedInstance = [[CLLocationManager alloc]init];
     });
-    
+
     return _sharedInstance;
 }
 
 /* Override the standard getter method to use lazy instantiation to load the location manager
  * request whenInUseAuthorization and set the desired accuracy.
  */
-- (CLLocationManager *)locationManager
-{
-    if (!_locationManager) {
-        _locationManager = [[CLLocationManager alloc]init]; //create location manager
-        _locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
-        [_locationManager requestWhenInUseAuthorization];   //request authorization
-    }
-    return _locationManager;
-}
+//- (CLLocationManager *)locationManager
+//{
+//    if (!_locationManager) {
+//        _locationManager = [[CLLocationManager alloc]init]; //create location manager
+//        _locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+//        [_locationManager requestWhenInUseAuthorization];   //request authorization
+//    }
+//    return _locationManager;
+//}
 
 
 @end

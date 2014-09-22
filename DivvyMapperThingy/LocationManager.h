@@ -13,7 +13,7 @@
 
 +(instancetype)sharedInstance;
 
-@property (nonatomic)CLLocationManager* locationManager;
+// @property (nonatomic)CLLocationManager* locationManager;
 
 @end
 

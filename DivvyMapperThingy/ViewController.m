@@ -46,7 +46,7 @@
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(handleRefresh:) forControlEvents:UIControlEventValueChanged];
     [self.myTableView addSubview:refreshControl];
-    locationManager = [[LocationManager sharedInstance]locationManager];
+    locationManager = [LocationManager sharedInstance];
     locationManager.delegate = self;
     [locationManager requestWhenInUseAuthorization];
     [locationManager startUpdatingLocation];

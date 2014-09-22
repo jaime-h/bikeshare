@@ -51,7 +51,7 @@
     [super viewDidLoad];
     [self colorTextLables];
 
-    self.locationManager = [[LocationManager sharedInstance] locationManager];
+    self.locationManager = [LocationManager sharedInstance];
     self.locationManager.delegate = (id)self;
     [self.locationManager startUpdatingLocation];
 
@@ -333,6 +333,14 @@
         [av show];
 
     }
+}
+
+#pragma mark Deallocate the location manager
+// since it is off the screen
+
+- (void)dealloc
+{
+    self.locationManager.delegate =  nil;
 }
 
 @end
