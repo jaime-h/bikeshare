@@ -11,7 +11,7 @@
 
 @interface LocationManager : NSObject 
 
-+(instancetype)sharedInstance;
++(CLLocationManager *)sharedInstance;
 
 // @property (nonatomic)CLLocationManager* locationManager;
 
