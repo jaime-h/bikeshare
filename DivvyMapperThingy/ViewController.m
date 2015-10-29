@@ -101,14 +101,18 @@
     NSInteger NumberOfBikes; NSInteger NumberOfDocks; NSInteger NumberOfAllDocks;
     NumberOfBikes = [location.availableBikes intValue];
     NumberOfDocks = [location.availableDocks intValue];
-    NumberOfAllDocks = [location.totalDocks  intValue];
+  
+  /*
+   NumberOfAllDocks = [location.totalDocks  intValue];
 
-    // Using total docs to determine the % of free bikes and free docks
+    Using total docs to determine the % of free bikes and free docks
 
     float percentageOfFreeBikes; float percentageOfFreeDocks;
 
     percentageOfFreeBikes = (float) NumberOfBikes/NumberOfAllDocks;
     percentageOfFreeDocks = (float) NumberOfDocks/NumberOfAllDocks;
+     
+     */
 
     int distance = roundf([location.placemark.location distanceFromLocation:locationManager.location]);
 
